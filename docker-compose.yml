@@ -1,0 +1,11 @@
+services:
+  controle:
+    image: postgres
+    container_name: controle
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: QWERTY123
+      POSTGRES_DB: controle
+
+    ports:
+      - "5432:5432"
