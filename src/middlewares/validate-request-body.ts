@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ZodSchema } from "zod";
+import { ZodSchema, ZodError } from "zod";
 
 const validateRequestBody = (schema: ZodSchema)=>{
     return function requestBodyValidator (req: Request, res: Response, next: NextFunction){
@@ -7,9 +7,22 @@ const validateRequestBody = (schema: ZodSchema)=>{
             schema.parse(req.body)
             next();
         }catch(err: any){
-            console.log(err.message)
+
+            if(err instanceof ZodError){
+                const errors = err.errors.map(e=>({
+                    field: e.path.join('.'),
+                    message: e.message
+                }))
+
+                res.status(400).json({
+                    error: "Falha na validação",
+                    details: errors
+                })
+            }else{
+                res.status(500).json({error: "Erro interno no servidor"})
+            }
+
             
-            res.status(400).send("Informe os campos corretamente")
         }
     }
 }

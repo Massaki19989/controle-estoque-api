@@ -32,7 +32,7 @@ export default async function authController(app: Express) {
         
     })
 
-    router.post('/register', validateRequestBody(registerSchema),async (req, res) => {
+    router.post('/register', validateRequestBody(registerSchema), async (req, res) => {
         try {
             req.body.role = Number(req.body.role);
             const data: RegisterRequest = {

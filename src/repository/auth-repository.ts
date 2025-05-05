@@ -21,7 +21,10 @@ export default class AuthRepository {
     
     async createUser(data: RegisterRequest) {
         return await prisma.users.create({
-            data: data
+            data: {
+                ...data,
+                role: 0
+            }
         })
     }
     
