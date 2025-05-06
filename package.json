@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/index.ts",
-    "gpush": "git add . && git commit -m \"Atualizando o projeto\" && git push"
+    "gpush": "git add . && git commit -m \"Atualizando o projeto\" && git push origin main"
   },
   "keywords": [],
   "author": "",
