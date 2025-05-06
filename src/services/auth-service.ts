@@ -2,7 +2,6 @@ import AuthRepository from "../repository/auth-repository";
 import { RegisterRequest } from "../types/auth-types";
 import { hash, genSalt, compare } from "bcrypt";
 import jwt from "jsonwebtoken";
-import cookieParser from "cookie-parser";
 
 const authDb = new AuthRepository();
 
@@ -19,6 +18,12 @@ export default class AuthService {
         if (!validatePassword) {
             throw new Error("Senha incorreta!");
         }
+
+        if(user.active === false) {
+            throw new Error("Este usuário não está ativo!");
+        }
+
+        
         user.password = "";
 
         const secret = process.env.SECRET_KEY;
@@ -29,7 +34,7 @@ export default class AuthService {
         
         const token = jwt.sign(user, secret, {expiresIn: "2d" });
 
-        return token;
+        return token    	;
     }
     
     async register(data: RegisterRequest) {
