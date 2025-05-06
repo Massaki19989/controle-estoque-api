@@ -1,0 +1,21 @@
+import prisma from "../prisma/prisma-client";
+
+export default class CategoryRepository {
+    async allCategories() {
+        return await prisma.category.findMany({
+            orderBy: {
+                name: "asc"
+            }
+        })
+    }
+
+    async createCategory(name: string) {
+        return await prisma.category.create({
+            data: {
+                name,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            }
+        })
+    }
+}

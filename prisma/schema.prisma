@@ -33,6 +33,8 @@ model Products {
   Sales     Sales[]
   userId    String
   user      Users @relation(fields: [userId], references: [id])
+  categoryId String
+  category   category @relation(fields: [categoryId], references: [id])
 }
 
 model Stock {
@@ -56,4 +58,12 @@ model Sales {
   product   Products @relation(fields: [productId], references: [id])
   userId    String
   user      Users @relation(fields: [userId], references: [id])
+}
+
+model category{
+  id        String      @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Products  Products[]
 }

@@ -3,6 +3,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import authController from './controllers/auth-controller';
 import cookieParser from 'cookie-parser';
+import productController from './controllers/product-controller';
 
 const app = express();
 const port = process.env.PORT;
@@ -13,6 +14,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 authController(app);
+productController(app);
 
 app.listen(port, () =>{
     console.log('Rodando')

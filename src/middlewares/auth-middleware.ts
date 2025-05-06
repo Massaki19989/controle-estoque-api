@@ -5,11 +5,11 @@ export interface AuthenticatedRequest extends Request {
     user?: any;
 }
 
-export default function authMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export function authMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     const token = req.cookies.token;
 
     if (!token) {
-        return res.status(401).json({ message: "Token não fornecido!" });
+        res.status(401).json({ message: "Token não fornecido!" });
     }
 
     try {
