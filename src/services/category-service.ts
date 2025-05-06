@@ -18,4 +18,12 @@ export default class CategoryService {
         }
         return category;
     }
+
+    async validateCategory(name: string) {
+        const category = await categoryDb.getByName(name);
+        if (category) {
+            throw new Error("Categoria já cadastrada");
+        }
+        return true;
+    }
 }

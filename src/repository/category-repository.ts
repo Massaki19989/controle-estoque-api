@@ -18,4 +18,12 @@ export default class CategoryRepository {
             }
         })
     }
+
+    async getByName(name: string) {
+        return await prisma.category.findFirst({
+            where: {
+                name
+            }
+        })
+    }
 }

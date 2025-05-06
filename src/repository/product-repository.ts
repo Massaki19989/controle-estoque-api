@@ -20,4 +20,12 @@ export default class ProductRepository {
             }
         })
     }
+
+    async getByName(name: string) {
+        return await prisma.products.findFirst({
+            where: {
+                name
+            }
+        })
+    }
 }
