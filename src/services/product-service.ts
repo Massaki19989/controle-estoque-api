@@ -27,4 +27,12 @@ export default class ProductService {
         return product;
 
     }
+
+    async getProductsFiltered(categoryId: string, take: number, skip: number, order: "asc" | "desc") {
+        const products = await productDb.getProductsFiltered(categoryId, take, skip, order);
+        if (!products) {
+            throw new Error("Erro ao buscar produtos");
+        }
+        return products;
+    }
 }

@@ -15,6 +15,7 @@ export default class ProductRepository {
             data: {
                 ...data,
                 userId,
+                quantity: 0,
                 createdAt: new Date(),
                 updatedAt: new Date()
             }
@@ -27,5 +28,29 @@ export default class ProductRepository {
                 name
             }
         })
+    }
+
+    async getProductsFiltered(categoryId: string, take: number, skip: number, order: "asc" | "desc") {
+        if(categoryId != 'all'){
+            return await prisma.products.findMany({
+                where: {
+                    categoryId
+                },
+                take,
+                skip,
+                orderBy: {
+                    createdAt: order
+                }
+            })
+        }else{
+            return await prisma.products.findMany({
+                take,
+                skip,
+                orderBy: {
+                    createdAt: order
+                }
+            })
+        }
+        
     }
 }

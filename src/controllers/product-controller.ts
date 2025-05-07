@@ -39,5 +39,6 @@ export default async function productController(app: Express) {
     });
 
 
+
     app.use("/product", router);
 }

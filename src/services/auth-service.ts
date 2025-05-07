@@ -34,7 +34,7 @@ export default class AuthService {
         
         const token = jwt.sign(user, secret, {expiresIn: "2d" });
 
-        return token    	;
+        return token;
     }
     
     async register(data: RegisterRequest) {
