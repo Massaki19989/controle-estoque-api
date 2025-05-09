@@ -10,21 +10,26 @@ export function authMiddleware(req: AuthenticatedRequest, res: Response, next: N
 
     if (!token) {
         res.status(401).json({ message: "Token não fornecido!" });
-    }
-
-    try {
-        const secret = process.env.SECRET_KEY;
-
-        if (secret) {
-            const decoded = jwt.verify(token, secret);
-            req.user = decoded;
-            next();
-        }else{
-            res.status(500).json({ message: "Chave secreta não encontrada!" });
+    }else{
+        try {
+            const secret = process.env.SECRET_KEY;
+    
+            if (secret) {
+                const decoded = jwt.verify(token, secret);
+                req.user = decoded;
+                if(req.user.active == false){
+                    res.status(401).json({ message: "Usuário inativo!" });
+                }
+                next();
+            }else{
+                res.status(500).json({ message: "Chave secreta não encontrada!" });
+            }
+            
+            
+        }catch (error: any) {
+            res.status(500).json({ message: "Erro ao verificar o token!" });
         }
-        
-        
-    }catch (error: any) {
-        res.status(500).json({ message: "Erro ao verificar o token!" });
     }
+
+    
 }

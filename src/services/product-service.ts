@@ -1,7 +1,9 @@
 import ProductRepository from "../repository/product-repository";
 import { ProductValidation } from "../validations/product-validation";
+import  CategoryRepository from "../repository/category-repository";
 
 const productDb = new ProductRepository();
+const categoryDb = new CategoryRepository();
 
 export default class ProductService {
 
@@ -19,6 +21,12 @@ export default class ProductService {
         if (productExists) {
             throw new Error("Produto já cadastrado");
         }
+
+        const categoryExists = await categoryDb.getById(data.categoryId);
+        if (!categoryExists) {
+            throw new Error("Categoria não encontrada");
+        }
+
 
         const product = await productDb.registerProduct(data, userId);
         if (!product) {

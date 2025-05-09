@@ -1,13 +1,25 @@
 import { Express, Router } from "express";
 import { AuthenticatedRequest } from "../middlewares/auth-middleware";
+import StockService from "../services/stock-service";
 
-async function stockController(app: Express) {
+const stockService = new StockService();
+
+export default async function stockController(app: Express) {
     const router = Router();
 
     router.get('/', async (req: AuthenticatedRequest, res) => {
         try {
-            // Implementar lógica para buscar ações
-            res.status(200).json({ message: "Ações buscadas com sucesso!" });
+
+            const { take, skip, order } = req.query;
+
+            const takeNumber = parseInt(take as string) || 10;
+            const skipNumber = parseInt(skip as string) || 0;
+            const orderBy = (order as string) === "asc" ? "asc" : "desc";
+
+            const searchAll = await stockService.searchAll(takeNumber, skipNumber, orderBy);
+
+            res.status(200).json({ data: searchAll });
+
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }

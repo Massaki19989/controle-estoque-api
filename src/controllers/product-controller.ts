@@ -11,9 +11,11 @@ export default async function productController(app: Express) {
     router.use(authMiddleware);
 
     router.get("/",async (req: AuthenticatedRequest, res) => {
-        try {
-            const product = await productService.productDetails(req.user.id);
+        
+        const productId = req.query.id as string || "";
 
+        try {
+            const product = await productService.productDetails(productId);
             res.status(200).json(product);
         } catch (error: any) {
             res.status(400).json({ error: error.message });

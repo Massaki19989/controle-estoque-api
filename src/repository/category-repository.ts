@@ -26,4 +26,12 @@ export default class CategoryRepository {
             }
         })
     }
+
+    async getById(id: string) {
+        return await prisma.category.findUnique({
+            where: {
+                id
+            }
+        })
+    }
 }
