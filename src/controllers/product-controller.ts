@@ -24,7 +24,8 @@ export default async function productController(app: Express) {
 
     router.post("/register", validateRequestBody(productValidation),async (req: AuthenticatedRequest, res) => {
         try {
-            const { name, price, categoryId } = req.body;
+            const { name, categoryId } = req.body;
+            const price = req.body.price;
             const userId = req.user.id;
             const data: ProductValidation = {
                 name,
@@ -39,6 +40,22 @@ export default async function productController(app: Express) {
             res.status(400).json({ error: error.message });
         }
     });
+
+    router.put("/update", async (req: AuthenticatedRequest, res) => {
+        try{
+            const { id, price, name, categoryId } = req.body;
+
+            if (!id) {
+                throw new Error("ID é obrigatório");
+            }
+
+            await productService.updateProduct(id, Number(price), name, categoryId);
+            
+            res.status(200).json({ message: "Produto atualizado com sucesso" });
+        }catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    })
 
 
 

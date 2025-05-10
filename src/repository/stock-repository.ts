@@ -9,6 +9,27 @@ export default class StockRepository {
                 createdAt: orderBy
             }
         })
-        
+    }
+
+    async selectQtd(id: string) {
+        return await prisma.products.findUnique({
+            where: {
+                id
+            },
+            select: {
+                quantity: true
+            }
+        })
+    }
+
+    async updateStock(id: string, quantity: number) {
+        return await prisma.products.update({
+            where: {
+                id
+            },
+            data: {
+                quantity
+            }
+        })
     }
 }

@@ -43,4 +43,37 @@ export default class ProductService {
         }
         return products;
     }
+
+    async updateProduct(id: string, price: number | null, name: string | null, categoryId: string | null) {
+        const product = await productDb.productDetails(id);
+
+        
+        if (!product) {
+            throw new Error("Produto não encontrado");
+        }
+
+        if(price == null || price == undefined){
+            price = product.price;
+        }
+
+        if(name == null || name == undefined || name == ""){
+            name = product.name;
+        }
+
+        if(categoryId == null || categoryId == undefined || categoryId == ""){
+            categoryId = product.categoryId;
+        }
+
+        const categoryExists = await categoryDb.getById(categoryId as string);
+        if (!categoryExists) {
+            throw new Error("Categoria não encontrada");
+        }
+
+        const updatedProduct = await productDb.updateProduct(id, price, name, categoryId);
+        if (!updatedProduct) {
+            throw new Error("Erro ao atualizar produto");
+        }
+        return updatedProduct;
+
+    }
 }

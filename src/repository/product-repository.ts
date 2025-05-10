@@ -53,4 +53,18 @@ export default class ProductRepository {
         }
         
     }
+
+    async updateProduct(id: string, price: number, name: string , categoryId: string) {
+        return await prisma.products.update({
+            where: {
+                id
+            },
+            data: {
+                price,
+                name,
+                categoryId,
+                updatedAt: new Date()
+            }
+        })
+    }
 }
