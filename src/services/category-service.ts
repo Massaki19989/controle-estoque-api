@@ -26,4 +26,16 @@ export default class CategoryService {
         }
         return true;
     }
+
+    async updateCategory(id: string, name: string) {
+        const category = await categoryDb.getById(id);
+        if (!category) {
+            throw new Error("Categoria não encontrada");
+        }
+        const updatedCategory = await categoryDb.updateCategory(id, name);
+        if (!updatedCategory) {
+            throw new Error("Erro ao atualizar categoria");
+        }
+        return updatedCategory;
+    }
 }

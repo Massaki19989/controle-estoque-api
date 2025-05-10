@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 export interface AuthenticatedRequest extends Request {
     user?: any;
 }
-
 export function authMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     const token = req.cookies.token;
 
@@ -30,6 +29,4 @@ export function authMiddleware(req: AuthenticatedRequest, res: Response, next: N
             res.status(500).json({ message: "Erro ao verificar o token!" });
         }
     }
-
-    
 }

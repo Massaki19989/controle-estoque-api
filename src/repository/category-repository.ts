@@ -34,4 +34,16 @@ export default class CategoryRepository {
             }
         })
     }
+
+    async updateCategory(id: string, name: string) {
+        return await prisma.category.update({
+            where: {
+                id
+            },
+            data: {
+                name,
+                updatedAt: new Date()
+            }
+        })
+    }
 }

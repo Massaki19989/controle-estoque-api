@@ -27,5 +27,17 @@ export default async function categoryController(app: Express) {
         }
     });
 
+    router.put("/update/:id", async (req, res) => {
+        try{
+            const { id } = req.params;
+            const { name } = req.body;
+
+            await categoryService.updateCategory(id, name);
+            res.status(200).json({ message: "Categoria atualizada com sucesso" });
+        }catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    })
+
     app.use("/category", router);
 }

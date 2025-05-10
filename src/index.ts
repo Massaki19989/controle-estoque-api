@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import productController from './controllers/product-controller';
 import categoryController from './controllers/category-controller';
 import stockController from './controllers/stock-controller';
+import userController from './controllers/user-controller';
+import saleController from './controllers/sale-controller';
 
 const app = express();
 const port = process.env.PORT;
@@ -19,6 +21,8 @@ authController(app);
 productController(app);
 categoryController(app);
 stockController(app);
+userController(app);
+saleController(app);
 
 app.listen(port, () =>{
     console.log('Rodando')
