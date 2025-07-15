@@ -75,4 +75,20 @@ export default class ProductRepository {
             }
         })
     }
+
+    async deleteProduct(id: string) {
+        return await prisma.products.delete({
+            where: {
+                id
+            }
+        })
+    }
+
+    async stockVerification(productId: string) {
+        return await prisma.products.count({
+            where: {
+                productId
+            },
+        })
+    }
 }

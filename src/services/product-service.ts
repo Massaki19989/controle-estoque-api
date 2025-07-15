@@ -69,11 +69,44 @@ export default class ProductService {
             throw new Error("Categoria não encontrada");
         }
 
+        if(price == null){
+            throw new Error("Erro com o preço do produto");
+        }
+
+        if(name == null || name == ""){
+            throw new Error("Erro com o nome do produto");
+        }
+
+        if(categoryId == null || categoryId == ""){
+            throw new Error("Erro com a categoria do produto");
+        }
+
         const updatedProduct = await productDb.updateProduct(id, price, name, categoryId);
         if (!updatedProduct) {
             throw new Error("Erro ao atualizar produto");
         }
         return updatedProduct;
 
+    }
+
+    async deleteProduct(id: string) {
+        const product = await productDb.productDetails(id);
+        const verifyStock = await productDb.stockVerification(id);
+
+        if (verifyStock > 0) {
+            throw new Error("Produto ainda possui estoque, não é possível deletar");
+        }
+
+        if (!product) {
+            throw new Error("Produto não encontrado");
+        }
+
+
+
+        const deletedProduct = await productDb.deleteProduct(id);
+        if (!deletedProduct) {
+            throw new Error("Erro ao deletar produto");
+        }
+        return deletedProduct;
     }
 }

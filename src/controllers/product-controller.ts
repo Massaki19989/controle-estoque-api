@@ -57,6 +57,21 @@ export default async function productController(app: Express) {
         }
     })
 
+    router.delete("/delete", async (req: AuthenticatedRequest, res) => {
+        try {
+            const { id } = req.body;
+
+            if (!id) {
+                throw new Error("ID é obrigatório");
+            }
+
+            await productService.deleteProduct(id);
+            
+            res.status(200).json({ message: "Produto deletado com sucesso" });
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    });
 
 
     app.use("/product", router);
