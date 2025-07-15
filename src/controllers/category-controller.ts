@@ -39,5 +39,15 @@ export default async function categoryController(app: Express) {
         }
     })
 
+    router.delete("/delete/:id", async (req, res) => {
+        try {
+            const { id } = req.params;
+            await categoryService.deleteCategory(id);
+            res.status(200).json({ message: "Categoria excluída com sucesso" });
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    })
+
     app.use("/category", router);
 }

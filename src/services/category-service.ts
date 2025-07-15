@@ -1,6 +1,8 @@
 import CategoryRepository from "../repository/category-repository";
+import ProductRepository from "../repository/product-repository";
 
 const categoryDb = new CategoryRepository();
+const productDb = new ProductRepository();
 
 export default class CategoryService {
     async allCategories() {
@@ -37,5 +39,23 @@ export default class CategoryService {
             throw new Error("Erro ao atualizar categoria");
         }
         return updatedCategory;
+    }
+
+    async deleteCategory(id: string) {
+        const category = await categoryDb.getById(id);
+        if (!category) {
+            throw new Error("Categoria não encontrada");
+        }
+
+        const products = await productDb.productWithCategory(id);
+        if (products > 0) {
+            throw new Error("Não é possível excluir uma categoria que possui produtos associados");
+        }
+
+        const deletedCategory = await categoryDb.deleteCategory(id);
+        if (!deletedCategory) {
+            throw new Error("Erro ao excluir categoria");
+        }
+        return deletedCategory;
     }
 }

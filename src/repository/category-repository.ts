@@ -46,4 +46,12 @@ export default class CategoryRepository {
             }
         })
     }
+
+    async deleteCategory(id: string) {
+        return await prisma.category.delete({
+            where: {
+                id
+            }
+        })
+    }
 }

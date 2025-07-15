@@ -67,4 +67,12 @@ export default class ProductRepository {
             }
         })
     }
+
+    async productWithCategory(categoryId: string) {
+        return await prisma.products.count({
+            where: {
+                categoryId
+            }
+        })
+    }
 }
