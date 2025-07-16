@@ -84,11 +84,23 @@ export default class ProductRepository {
         })
     }
 
-    async stockVerification(productId: string) {
+    async stockVerification(id: string) {
         return await prisma.products.count({
             where: {
-                productId
+                id
             },
+        })
+    }
+
+    async updateStock(id: string, quantity: number) {
+        return await prisma.products.update({
+            where: {
+                id
+            },
+            data: {
+                quantity,
+                updatedAt: new Date()
+            }
         })
     }
 }
