@@ -1,4 +1,5 @@
 import prisma from "../prisma/prisma-client";
+import { SaleSchema } from "../validations/sale-validation";
 
 export default class SaleRepository {
     async getAllSales() {
@@ -18,5 +19,17 @@ export default class SaleRepository {
                 quantity: true,
             }
         });
+    }
+
+    async addSale(data: SaleSchema){
+        return await prisma.sales.create({
+            data: {
+                productId: data.productId,
+                quantity: data.quantity,
+                price: data.price,
+                updatedAt: new Date(),
+                userId: data.userId
+            }
+        })
     }
 }

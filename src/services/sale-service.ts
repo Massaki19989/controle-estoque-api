@@ -1,8 +1,10 @@
 import SaleRepository from "../repository/sale-repository";
+import { SaleSchema } from "../validations/sale-validation";
 
 const saleRepository = new SaleRepository();
 
 export default class SaleService {
+    
     async getAllSales() {
         const sales = await saleRepository.getAllSales();
         return sales.map((sale) => ({
@@ -20,4 +22,11 @@ export default class SaleService {
             createdAt: sale.createdAt,
         }));
     }
+
+    async saleRegister(data: SaleSchema){
+        const sale = await saleRepository.addSale(data);
+        return sale;
+    }
+
+    
 }
