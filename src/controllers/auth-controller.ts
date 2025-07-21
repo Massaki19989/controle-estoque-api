@@ -3,11 +3,37 @@ import { RegisterRequest } from '../types/auth-types';
 import AuthService from '../services/auth-service';
 import { registerSchema } from "../validations/user-validation";
 import validateRequestBody from '../middlewares/validate-request-body';
+import cookieParser from 'cookie-parser';
 
 const authService = new AuthService();
 
 export default async function authController(app: Express) {
     const router = Router();
+    app.use(cookieParser());
+
+    /**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Realiza login
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login realizado com sucesso
+ *       400:
+ *         description: Erro ao fazer login
+ */
 
     router.post('/login', async (req, res) => {
         
@@ -17,15 +43,23 @@ export default async function authController(app: Express) {
                 throw new Error("Email e senha são obrigatórios!");
             }
             const token = await authService.login(data.email, data.password);
-
+            /*
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
                 maxAge: 2 * 24 * 60 * 60 * 1000 
-            })
+            })*/
 
-            res.status(200).json({ message: "Sucesso no login!" });
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: false,        // 👍 sem HTTPS, precisa ser false
+                sameSite: "strict", 
+                maxAge: 2 * 24 * 60 * 60 * 1000 
+            });
+            
+
+            res.status(200).json({ message: token });
         }catch (error: any) {
             res.status(400).json({ error: error.message });
         }
@@ -45,6 +79,11 @@ export default async function authController(app: Express) {
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }
+    });
+
+    router.get('/logout', (req, res) => {
+        res.clearCookie("token");
+        res.status(200).json({ message: "Logout realizado com sucesso!" });
     });
 
 
