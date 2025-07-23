@@ -28,12 +28,36 @@ export default async function userController(app: Express){
 
     router.delete("/deactive", async (req: AuthenticatedRequest, res: Response) => {
         try {
-            const user = await userService.deactive(req.user.id);
+            const user = await userService.deactive(req.user.id, req.user.id);
             res.status(200).json(user);
         } catch (error: any) {
             res.status(400).json({ error: error.message });
         }
     })
+
+    router.post('/approved', async (req: AuthenticatedRequest, res)=>{
+        try {
+            const currentUserId = req.user.id;
+            const userId = req.body.id;
+            const user = await userService.approveUser(userId, currentUserId);
+            user.password = "";
+            res.status(200).json(user);
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    })
+
+    router.post("/disapproved", async (req: AuthenticatedRequest, res) => {
+        try {
+            const userId = req.body.id;
+            const currentUserId = req.user.id;
+            const user = await userService.deactive(userId, currentUserId);
+            user.password = "";
+            res.status(200).json(user);
+        } catch (error: any) {
+            res.status(400).json({ error: error.message });
+        }
+    });
 
     app.use("/user", router);
 }

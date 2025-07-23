@@ -11,7 +11,7 @@ export default async function authController(app: Express) {
     const router = Router();
     app.use(cookieParser());
 
-    /**
+/**
  * @swagger
  * /auth/login:
  *   post:

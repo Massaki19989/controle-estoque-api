@@ -42,4 +42,15 @@ export default class UserRepository {
         return user;
     }
 
+    async approveUser(id: string) {
+        return await prisma.users.update({
+            where: {
+                id: id
+            },
+            data: {
+                active: true
+            }
+        });
+    }
+
 }
