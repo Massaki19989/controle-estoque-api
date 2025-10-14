@@ -44,5 +44,5 @@ userController(app);
 saleController(app);
 
 app.listen(port, () =>{
-    console.log('Rodando')
+    console.log('Rodando, http://localhost:'+port)
 })

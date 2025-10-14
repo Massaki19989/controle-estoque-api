@@ -9,13 +9,3 @@ services:
 
     ports:
       - "5432:5432"
-  
-  api:
-    build: .
-    container_name: controle-api
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgresql://admin:QWERTY123@postgres:5432/controle?schema=public
-    depends_on:
-      - postgres

@@ -66,6 +66,41 @@ export default async function authController(app: Express) {
         
     })
 
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Realiza o cadastro de um novo usuário
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *               - role
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               role:
+ *                 type: integer
+ *                 description: Código numérico representando o tipo de usuário
+ *     responses:
+ *       201:
+ *         description: Usuário registrado com sucesso
+ *       400:
+ *         description: Erro ao registrar o usuário
+ */
+
+
     router.post('/register', validateRequestBody(registerSchema), async (req, res) => {
         try {
             req.body.role = Number(req.body.role);
@@ -80,6 +115,18 @@ export default async function authController(app: Express) {
             res.status(400).json({ error: error.message });
         }
     });
+
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   get:
+ *     summary: Realiza logout
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description: Logout realizado com sucesso
+ */
 
     router.get('/logout', (req, res) => {
         res.clearCookie("token");
