@@ -90,8 +90,9 @@ export default async function authController(app: Express) {
  *                 type: string
  *               password:
  *                 type: string
- *               role:
- *                 type: integer
+ *               cpf:
+ *                 type: string
+ *              
  *                 description: Código numérico representando o tipo de usuário
  *     responses:
  *       201:
